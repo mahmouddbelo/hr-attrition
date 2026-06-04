@@ -193,6 +193,25 @@ html, body, [class*="css"] {
 }
 .insight strong { color: #1d4ed8; }
 
+/* ══ HR RECOMMENDATION BOX ══════════════════════════════════════════ */
+.hr-rec {
+    background: linear-gradient(135deg, #0a1628, #0f2044);
+    border: 1px solid rgba(59,130,246,0.35);
+    border-left: 4px solid #60a5fa;
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px; font-size: 0.84rem;
+    color: #e2eaf8; line-height: 1.65; margin-bottom: 20px;
+}
+.hr-rec-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    color: #60a5fa; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 8px;
+}
+.hr-rec ul { margin: 0; padding-left: 18px; }
+.hr-rec li { margin-bottom: 5px; color: #cbd5e1; }
+.hr-rec strong { color: #93c5fd; }
+
 /* ══ TABS ═══════════════════════════════════════════════════════════ */
 [data-testid="stTabs"] [data-baseweb="tab-list"] {
     background: #f0f4fc; border-radius: 12px; padding: 5px; gap: 4px;
@@ -320,6 +339,15 @@ def sec(icon, title, desc=""):
 
 def ins(text):
     st.markdown(f'<div class="insight">{text}</div>', unsafe_allow_html=True)
+
+def rec(items: list):
+    """Render a dark HR Recommendation card with bullet points."""
+    bullets = "".join(f"<li>{i}</li>" for i in items)
+    st.markdown(f"""
+    <div class="hr-rec">
+        <div class="hr-rec-title">🎯 HR Recommendation</div>
+        <ul>{bullets}</ul>
+    </div>""", unsafe_allow_html=True)
 
 # Chart palette — blue spectrum
 NAVY  = "#0a1628"; ROYAL = "#1d4ed8"; SKY = "#3b82f6"; ICE = "#60a5fa"; FROST = "#93c5fd"
@@ -471,6 +499,12 @@ st.markdown("<br>", unsafe_allow_html=True)
 # SECTION 1 — OVERVIEW
 # ══════════════════════════════════════════════════════════════════════════════
 sec("🔍", "Attrition Overview", "Overall split and attrition rate by job role")
+ins("💡 <strong>Attrition Rate</strong> = the percentage of employees who left. A rate above 15% is considered high in most industries. Darker blue bars in the role chart indicate roles with above-average attrition — those departments need the most attention.")
+rec([
+    "<strong>Benchmark immediately:</strong> if your overall rate exceeds 20%, launch a company-wide retention audit before the next quarter.",
+    "<strong>Focus on the highest-attrition role first</strong> — assign an HR business partner to that department to run stay interviews within 30 days.",
+    "<strong>Track this KPI monthly</strong> — a rising attrition rate is an early warning signal that something changed in culture, management, or compensation.",
+])
 
 c1, c2 = st.columns([1, 2])
 with c1:
@@ -510,6 +544,11 @@ with c2:
 # ══════════════════════════════════════════════════════════════════════════════
 sec("👤", "Demographics", "Attrition rates by gender, marital status, and age group")
 ins("💡 <strong>Darker blue = above average attrition rate.</strong> The dotted line marks the current filtered average. Rates are used (not raw counts) so groups of different sizes are fairly compared.")
+rec([
+    "<strong>18–25 age group:</strong> launch a structured onboarding mentorship program — pair every new hire under 26 with a senior buddy for their first 6 months.",
+    "<strong>Single employees</strong> tend to leave more (less financial ties, higher mobility) — offer them career development tracks and relocation packages to build loyalty.",
+    "<strong>Run quarterly pulse surveys</strong> segmented by age group and marital status to catch dissatisfaction early before it becomes a resignation.",
+])
 
 c1, c2, c3 = st.columns(3)
 demo_cfg = [
@@ -542,6 +581,11 @@ for widget, col, order, title in demo_cfg:
 # ══════════════════════════════════════════════════════════════════════════════
 sec("⚖️", "Work-Life Balance & Job Satisfaction", "5-level ordinal scales — the real dataset has more categories than the data dictionary stated")
 ins("💡 Both scales have <strong>5 levels</strong> in the actual Kaggle data. Moving right (better conditions) should show a clear drop in attrition — if it does, these are genuine controllable levers for HR.")
+rec([
+    "<strong>Work-Life Balance:</strong> introduce flexible working hours or hybrid schedules for roles with 'Poor' WLB — this is the single highest-impact, lowest-cost retention lever available.",
+    "<strong>Job Satisfaction:</strong> conduct monthly 1-on-1 check-ins between managers and direct reports — employees rarely leave jobs they enjoy; they leave managers.",
+    "<strong>Set a WLB threshold:</strong> any team where >20% of employees rate WLB as Poor or Below Average should trigger an automatic HR review of workload and headcount.",
+])
 
 c1, c2 = st.columns(2)
 
@@ -576,6 +620,11 @@ for widget, col, order, title in [
 # ══════════════════════════════════════════════════════════════════════════════
 sec("💰", "Compensation & Tenure", "Distribution comparison: employees who stayed vs left")
 ins("💡 <strong>Violin plots</strong> reveal the full shape of the distribution — not just median. Wider = more employees at that value. The median gap % is shown in the chart subtitle.")
+rec([
+    "<strong>Compensation gap:</strong> if employees who left earned less at median, benchmark salaries against market data by role — even a 5–10% raise can prevent a costly resignation and rehire.",
+    "<strong>New-hire attrition:</strong> if leavers have shorter tenure, your onboarding experience needs work — implement a 90-day structured integration plan with clear milestones and feedback loops.",
+    "<strong>Retention bonuses:</strong> for employees in their first 2 years (highest-risk period), consider a tenure-based loyalty bonus at the 12-month and 24-month marks.",
+])
 
 c1, c2 = st.columns(2)
 for widget, col, ytitle, title in [
@@ -605,6 +654,12 @@ for widget, col, ytitle, title in [
 # SECTION 5 — PROMOTIONS, RECOGNITION & REMOTE WORK
 # ══════════════════════════════════════════════════════════════════════════════
 sec("🏆", "Promotions, Recognition & Remote Work", "Three controllable HR levers — things the company can actually change")
+ins("💡 These three factors are entirely within HR's control. Employees with <strong>zero promotions</strong> exit at the highest rate. <strong>Low recognition</strong> amplifies dissatisfaction. <strong>Remote flexibility</strong> can reduce commute-related attrition.")
+rec([
+    "<strong>Promotion pathways:</strong> define a written promotion criteria document for every role — employees who can't see a clear path forward will find one elsewhere.",
+    "<strong>Recognition program:</strong> implement a peer-to-peer recognition platform (low cost, high impact) — even a monthly 'shout-out' culture measurably reduces attrition in low-recognition groups.",
+    "<strong>Remote work policy:</strong> if remote employees show lower attrition, expand WFH eligibility for roles where it is operationally feasible — this costs nothing and improves retention.",
+])
 
 c1, c2, c3 = st.columns(3)
 
@@ -665,6 +720,11 @@ with c3:
 # ══════════════════════════════════════════════════════════════════════════════
 sec("🗺️", "Cross-Variable Heatmaps", "How combinations of role + workplace condition drive attrition")
 ins("💡 Each cell shows the attrition rate (%) for that role & condition pair. <strong>Deep blue = low risk · Deep red = high risk.</strong> Look for unexpected hot spots.")
+rec([
+    "<strong>Red cell = immediate action:</strong> any role-condition combination with attrition above 35% should have a dedicated retention plan — identify the 5–10 employees in that cell and schedule stay interviews this month.",
+    "<strong>Cross-department learning:</strong> find a role that stays green (low attrition) even with poor WLB — investigate what that team does differently and replicate it company-wide.",
+    "<strong>Use the heatmap in leadership meetings</strong> to show executives exactly which business units are hemorrhaging talent and why — it makes the business case for HR investment concrete.",
+])
 
 tab1, tab2 = st.tabs(["📊  Role × Job Satisfaction", "📊  Role × Work-Life Balance"])
 
@@ -702,6 +762,11 @@ with tab2:
 # ══════════════════════════════════════════════════════════════════════════════
 sec("📐", "Feature Correlation with Attrition", "Point-biserial correlation — the statistically correct method for a binary target variable")
 ins("💡 <strong>Blue bars (left)</strong> = higher values associated with staying. <strong>Red bars (right)</strong> = higher values associated with leaving. Longer bar = stronger relationship with attrition.")
+rec([
+    "<strong>Prioritize the top 3 red features</strong> — these are the variables most strongly linked to employees leaving; build your retention strategy around improving them.",
+    "<strong>Monthly income correlation:</strong> if income is a top positive predictor of staying, a salary review cycle tied to market benchmarks will have a directly measurable impact on retention.",
+    "<strong>Don't act on weak correlations</strong> (bars near zero) — focus HR budget and energy only on features with correlations above ±0.05, which have practical significance at this dataset size.",
+])
 
 num_cols = [c for c in df.select_dtypes(include=np.number).columns
             if c not in ["attrition","employee_id","income_annual","low_engagement","is_early_career"]]
@@ -732,7 +797,46 @@ st.plotly_chart(fig, width='stretch')
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SECTION 8 — DATA EXPLORER
+# SECTION 8 — HR RECOMMENDATIONS SUMMARY
+# ══════════════════════════════════════════════════════════════════════════════
+sec("🎯", "HR Recommendations Summary", "Prioritized action plan based on the data analysis above")
+
+rec_cols = st.columns(3)
+recs = [
+    ("🚨 Immediate (0–30 days)", ROYAL, [
+        "Run stay interviews in the highest-attrition role",
+        "Identify all employees with 0 promotions > 2 years",
+        "Schedule 1-on-1s with 'Poor' WLB employees",
+    ]),
+    ("📅 Short-term (1–3 months)", SKY, [
+        "Launch peer recognition program company-wide",
+        "Benchmark salaries vs market by job role",
+        "Define written promotion criteria for every role",
+    ]),
+    ("🗓️ Long-term (3–12 months)", ICE, [
+        "Implement flexible / hybrid work policy",
+        "Build structured 90-day onboarding program",
+        "Set up monthly attrition KPI dashboard review",
+    ]),
+]
+for col_widget, (title, color, items) in zip(rec_cols, recs):
+    with col_widget:
+        bullets = "".join(f"<li style='margin-bottom:6px;color:#cbd5e1'>{i}</li>" for i in items)
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,#0a1628,#0f2044);
+                    border-top:4px solid {color};border-radius:14px;
+                    padding:20px 22px;box-shadow:0 4px 20px rgba(10,22,40,0.18);
+                    height:100%">
+            <div style="font-family:Sora,sans-serif;font-size:0.8rem;font-weight:700;
+                        color:{color};letter-spacing:0.06em;margin-bottom:12px">{title}</div>
+            <ul style="margin:0;padding-left:18px">{bullets}</ul>
+        </div>""", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SECTION 9 — DATA EXPLORER
 # ══════════════════════════════════════════════════════════════════════════════
 sec("📋", "Data Explorer", "Browse and download the filtered dataset")
 
